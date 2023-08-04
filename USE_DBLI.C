@@ -1,0 +1,424 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct node
+{
+ struct node *prev;
+ int data;
+ struct node *next;
+}node;
+node *head=NULL;
+void add_at_end()
+{
+   node *temp,*p;
+   int data;
+   p=head;
+   printf("Enter data.  ");
+   scanf("%d",&data);
+   if(head==NULL)
+   {
+     head=malloc(sizeof(node));
+     head->prev=NULL;
+     head->data=data;
+     head->next=NULL;
+     printf("Node Added.\n");
+   }
+   else{
+   temp=malloc(sizeof(node));
+   temp->prev=NULL;
+   temp->data=data;
+   temp->next=NULL;
+   while(p->next!=NULL)
+	   p=p->next;
+   temp->prev=p;
+   p->next=temp;
+   }
+}
+void add_at_beg()
+{
+  int data;
+  node* temp;
+  printf("Enter data.  ");
+  scanf("%d",&data);
+  if(head==NULL)
+  {
+     head=malloc(sizeof(node));
+     head->prev=NULL;
+     head->data=data;
+     head->next=NULL;
+     printf("Node Added.\n");
+  }
+  else
+  {
+  temp =malloc(sizeof(node));
+  temp->prev=NULL;
+  temp->data=data;
+  temp->next=head;
+  head->prev=temp;
+  printf("A Node Added.\n");
+  head=temp;
+  }
+}
+int add_at_pos()                           //Add at a position
+{
+   int data,pos,tot;
+   node *temp,*p1,*p2;
+   printf("Enter the position.  ");
+   scanf("%d",&pos);
+   printf("Enter data.  ");
+   scanf("%d",&data);
+   temp=malloc(sizeof(node));
+   temp->data=data;
+   if(pos==1&&head!=NULL)                  //Add. in node 1
+   {                                            //of a non-empty list
+      temp->next=head;
+      temp->prev=NULL;
+      head->prev=temp;
+      head=temp;
+      printf("Entered.\n");
+      return 1;
+   }
+   if(pos==1&&head==NULL)              //Add in node 1
+   {                                       //of a empty list
+      head=temp;
+      head->prev=NULL;
+      head->next=NULL;
+      printf("Entered.\n");
+      return 1;
+   }
+   tot=count();
+   if(pos>tot+1)                          //Given position unavailable
+   {
+    printf("Position does not exists.\n");
+    free(temp);
+    return 0;
+   }
+   p1=head;
+   while(pos!=2)
+   {
+      pos--;
+      p1=p1->next;
+   }
+   p2=p1->next;
+   if(p2==NULL)                        //Add at last pos
+   {
+     temp->prev=p1;
+     temp->next=NULL;
+     p1->next=temp;
+     printf("Entered.\n");
+     return 1;
+   }
+   else
+   {
+      temp->next=p2;                 //Add at given pos
+      temp->prev=p1;
+      p1->next=temp;
+      p2->prev=temp;
+      printf("Entered\n");
+      return 1;
+   }
+}
+void del_beg()                         //Delete first node
+{
+    node *temp;
+    temp=head;
+    if(head==NULL)
+	printf("List already empty.\n");
+    else
+    {
+	head=head->next;
+	free(temp);
+	printf("Deleted\n");
+    }
+}
+void del_end()                            //Delete End Node
+{
+    node *temp,*del;
+    temp=head;
+    if(head==NULL)
+       printf("List already empty\n");
+    else if(head->next==NULL)
+    {
+      free(head);
+      head=NULL;
+      printf("Deleted\n");
+    }
+    else
+    {
+    while(temp->next->next!=NULL)
+	 temp=temp->next;
+    del=temp->next;
+    temp->next=NULL;
+    free(del);
+    printf("Deleted\n");
+    }
+}
+void del_pos()                          //Delete from a position
+{
+    node *temp,*del,*temp2;
+    int pos,tot=count();
+    temp=head;
+    printf("Enter position to be deleted.");
+    scanf("%d",&pos);
+    if(pos>tot||pos<=0)
+       printf("Position does not exists\n");
+    else
+    {
+       if(pos==1)
+	 {
+	   head=head->next;                   //del first pos
+	   free(temp);
+	   printf("Deleted.\n");
+	 }
+       else{
+		while(pos!=2)
+		 {
+		     pos--;
+		     temp=temp->next;
+		 }
+		 del=temp->next;
+		 temp2=del->next;
+		 if(temp2==NULL)
+		 {
+		   temp->next=NULL;          //del last pos.
+		   free(del);
+		   printf("Deleted.\n");
+		 }
+		 else
+		 {
+		    temp->next=temp2;             //del given pos.
+		    temp2->prev=temp;
+		    free(del);
+		    printf("Deleted.\n");
+		 }
+	    }
+    }
+}
+int count()
+{                                 //to count
+   int c=0;
+   node *temp;
+   temp =head;
+   if(temp==NULL)
+	  return 0;
+   else
+   {
+      while(temp!=NULL)
+      {
+	c++;
+	temp=temp->next;
+      }
+      return c;
+   }
+}
+void print()                      //to print
+{
+  node *temp;
+  if(head==NULL)
+    printf("         List is empty");
+  else
+    {
+    temp=head;
+    printf("                   ");
+    while(temp!=NULL)
+      {
+	 printf("%d  ",temp->data);
+	 temp=temp->next;
+      }
+    }
+      printf("\n");
+}
+void reverse()                  //To Reverse the list
+{
+   node *p1,*p2;
+   if(head==NULL)
+	    printf("List Empty");
+   else{
+	 p1=head;
+	 p2=p1->next;
+
+	 p1->prev=p2;
+	 p1->next=NULL;
+
+	 while(p2!=NULL)
+	   {
+	     p2->prev=p2->next;
+	     p2->next=p1;
+
+	     p1=p2;
+	     p2=p2->prev;
+	   }
+	 head=p1;printf("List reversed.\n");
+       }
+}
+void mid_node()             //To find middle node
+{
+   node *fast,*slow;
+   if(count()<=2)
+	printf("Only %d node(s) present",count());
+   else{
+   fast=head;
+   slow=head;
+   while(fast->next!=NULL&&fast!=NULL)
+   {
+	fast=fast->next->next;
+	slow=slow->next;
+   }
+   printf("Middle node has %d.\n",slow->data);
+       }
+}
+void nth_end()   //To find nth element from end
+{
+   int n,k=0;
+   node *fast,*slow;
+   fast=head;
+   slow=head;
+   printf("Enter n to get nth data from end.");
+   scanf("%d",&n);
+   if(n>count())
+      printf("Only %d elements in the list.Hence, %d node from last not present.\n",count(),n);
+   else if(head==NULL)
+	 printf("List Empty.\n");
+   else
+   {
+   while(fast!=NULL)
+   {
+	fast=fast->next;
+	k++;
+	if(k>n)
+	   slow=slow->next;
+   }
+   printf("%d.\n",slow->data);
+}  }
+void sort()       //To sort the list
+{
+node *current,*index; int temp;
+ if(head==NULL)
+	printf("List empty\n");
+ else{
+	current=head;
+	while(current!=NULL)
+	{
+	 index=current->next;
+	 while(index!=NULL)
+	 {
+	  if(current->data>index->data)
+	    {
+	       temp=current->data;
+	       current->data=index->data;
+	       index->data=temp;
+	    }
+	  index=index->next;
+	 }
+	 current=current->next;
+	}printf("Sorted.\n");
+     }
+}
+void same()
+{
+   int flag=0;
+   node *current,*index,*del,*ptr;
+   current=head;
+   if(head==NULL)
+	printf("Lst Empty");
+   else{
+	  while(current!=NULL)
+	  {
+	     index=current->next;
+	     while(index!=NULL)
+	     {
+		if(current->data==index->data)
+		{
+		  flag=1;
+		  ptr=index->prev;
+		  ptr->next=index->next;
+		  del=index;
+		  index=index->next;
+		  index->prev=ptr;
+		  free(del);
+		}
+		index=index->next;
+	     }
+	     current=current->next;
+	  }
+	  if(flag==1)
+	  printf("Duplicates Removed.\n");
+	  else printf("No Duplicates present.\n");
+       }
+}
+int add_in_order()
+{
+  node *new,*curent;
+  int data;
+  printf("Enter data of new node.  ");
+  scanf("%d",&data);
+  new=malloc(sizeof(node));
+  new->data=data;
+  new->next=NULL;
+  new->prev=NULL;
+  if(head==NULL){ head=new;printf("Added\n"); return 1;}
+  sort();
+  if(new->data<head->data){
+			   new->next=head;
+			   head->prev=new;
+			   head=new; printf("Added\n");
+			   return 1;
+			  }
+  curent=head;
+  while(curent->data<new->data&&curent->next!=NULL)
+		  curent=curent->next;
+  if(curent->data>new->data){
+			      new->next=curent;
+			      new->prev=curent->prev;
+			      new->prev->next=new;
+			      curent->prev=new;
+			    }
+  else{
+       curent->next=new;
+       new->prev=curent;
+      }                 printf("Added\n");return 1;
+}
+void main()
+{
+int c,tot,menu;
+node *fre;
+clrscr();
+printf("Welcome to deal with a Doubly linked list\n");
+print_menu:{menu=0;
+printf("****Menu Driven****\n0 Exit\n1 Add node at end.\n2 Add a node in starting\n");
+printf("3 Add a node at a position.\n4 Delete 1st node.\n5 Delete Last Node\n");
+printf("6 Delete node from a position.\n7 Count Nodes\n8 Print List.\n9 Reverse list\n");
+printf("10 Find mid data\n11 Last (n)th node\n12 Sort List\n13 Remove duplicates.\n");
+printf("14 Add a node in sorted list.\n");
+while(1)
+{
+if(menu>5) goto print_menu; menu++;
+printf("\nEnter your choice ");
+scanf("%d",&c);
+switch(c)
+{
+  case 1: add_at_end(); break;
+  case 2: add_at_beg(); break;
+  case 3: add_at_pos(); break;
+  case 4: del_beg(); break;
+  case 5: del_end(); break;
+  case 6: del_pos(); break;
+  case 7: tot=count();  printf("%d elements in list.\n",tot);  break;
+  case 8: print(); break;
+  case 9: reverse(); break;
+  case 10: mid_node();break;
+  case 11: nth_end(); break;
+  case 12: sort();  break;
+  case 13: same(); break;
+  case 14: add_in_order();break;
+  case 0: printf("Exit\n");  goto free_mem;  exit(1);  break;
+
+  default:printf("Wrong Choice\n");  goto free_mem;  exit(1);  break;
+}
+}
+free_mem:for(fre=head;fre!=NULL;fre=fre->next)
+{
+free(fre);
+printf("Memory Deallocated\n");
+} }
+getch();
+}

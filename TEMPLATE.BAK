@@ -1,0 +1,15 @@
+#include<iostream.h>
+#include<conio.h>
+template<typename T>
+T fun(T a,T b)
+{
+  return a+b;
+}
+void main()
+{
+ clrscr();
+ cout<<fun<int>(2,3);
+ cout<<fun<char>('a','b');
+ cout<<fun<float>(3.0,4.0);
+ getch();
+}
