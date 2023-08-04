@@ -1,0 +1,380 @@
+#include<stdio.h>
+#include<stdlib.h>
+# define N 10
+//Program to implement Stack and Queue ...Dynamicaly and Staticaly
+
+int stak[N],q[N];//Declaration of arrays for stack & Q (Static Memory)
+int i=-1,f=-1,r=-1;
+typedef struct stack
+{
+ int data;
+ struct stack *link;   //Declaration of Stack Globaly
+}stack;
+typedef struct Q
+{                      //Declaration of Queue globaly
+ int data;
+ struct Q *link;
+}Q;
+
+stack *top=NULL;            //Pointer to last node of dynamic stack
+Q *front=NULL,*rear=NULL; //Pointer to first and last node of dynamic stack
+
+
+int deal_static()     //Main()->deal_static
+{                                           //Menu
+  int c;                                    //1 Stack
+  while(1)                                  //2 Queue
+  {
+   printf("\n\nEnter 0 for returning to previous menu.\n\n");
+   printf("Working by allocating static memory in-\n1 Stack\n2 Queue\n");
+   printf("Enter your choice  ");
+   scanf("%d",&c);
+   switch(c)
+    {
+     case 0:return 1;break;
+     case 1:static_stack_op();break;
+     case 2:static_queue_op();break;
+     default:return 1;break;
+    }
+  }
+}
+int static_stack_op()     //Main()->deal_static->static_stack_op
+{
+ int c;
+ printf("\nYou choosed to work with Stack by allocating static memory. It works on LIFO principle.\n\n\n");
+ while(1)
+ {
+  printf("You can perform following operations in an Array of Stack-\n");
+  printf("0 Return to previous menu\n1 Push data in stack.\n2 Pop last entered data.\n");
+  printf("3 Display Stack\n4 Print Last entered data\n5 Cheak is stack full?\n");
+  printf("6 Cheak is stack empty?\nEnter your choice  ");
+  scanf("%d",&c);
+  printf("\n\n");                 //Menu
+  switch(c)
+  {
+   case 0:return 1;break;
+   case 1:push();break;           //1 Push()
+   case 2:pop();break;            //2 Pop()
+   case 3:display();break;        //3 display()
+   case 4:peek();break;           //4 peek()
+   case 5:isfull();break;         //5 isfull()
+   case 6:isempty();break;        //6 isempty()
+   default:return 1;break;
+  }
+ }
+}
+int push()  //Main()->deal_static()->static_stack_op()->push() Case 1
+{
+ int data;
+ if(i==9)       {
+       printf("Can't push. Stack full. Its Overflow condition\n\n\n");
+       return 1;}
+ printf("Enter number to be pushed in stack.  ");
+ scanf("%d",&data);
+ i++;
+ stak[i]=data;
+ printf("Enterd %d at position %d.\n\n\n",data,i+1);
+ return 1;
+}
+int pop() //Main->deal_static->static_stack_op->pop()           Case 2
+{
+ int temp;
+ if(i==-1)                    {
+     printf("Stack already empty. Its Underflow condition\n\n\n");  return 1;}
+ temp=stak[i];
+ i--;
+ printf("According to LIFO %d is poped out of stack.\n\n\n",temp);
+ return 1;
+}
+int display() //Main->deal_static->static_stack_op->Display()   Case 3
+{
+ int n;
+ if(i==-1){
+      printf("Stack is empty. Nothing to display.\n\n\n");
+      return 1; }
+ for(n=i;n>=0;n--)
+      printf("%d <-- ",stak[n]);
+ printf("\n\n\n");
+ return 1;
+}
+int peek() //Main()->deal_stack()->static_stack_op()->peek()    Case 4
+{
+  if(i==-1)      {
+	printf("Stack Empty. Nothing on peek.\n\n\n");
+	return 1;}
+  printf("%d is on the peek.\n\n\n",stak[i]);
+  return 1;
+}
+int isfull()//Main()->deal_stack()->static_stack_op()->isfull()  Case 5
+{
+ if(i==N-1)
+    printf("Stack is full\n\n\n");
+ else
+    printf("Stack not full\n\n\n");
+ return 0;
+}
+int isempty()
+{                                                               //Case 6
+ if(i==-1)
+       printf("Stack is empty.\n\n\n");
+ else
+       printf("Stack is not empty.\n\n\n");
+ return 1;
+}
+///////////////////////////////////////////////////////////////////////////
+int static_queue_op()
+{
+int c;//Main()->deal_static->static_queue_op()
+printf("You choosed to work with Queue by allocating static memory. It works on FIFO principal.\n\n");
+while(1)
+{
+ printf("You can perform following operations in a Queue array.\n");
+ printf("0 to return to previous menu\n1 Add an element\n2 Remove an element\n");
+ printf("3 Display Queue\nEnter your choice  ");
+ scanf("%d",&c);
+ switch(c)
+ {                                 //Menu
+  case 1:enqueue();break;          //1 enqueue()
+  case 2:dequeue();break;          //2 dequeue()
+  case 3:print();break;            //3 print()
+
+  default:printf("Returning to previous menu\n\n");return 1;break;
+ }
+}
+}
+int enqueue()  //Main()->deal_static()->static_q_op()->enq()    Case 1
+{
+ int data;
+ if(r==N-1)     {
+       printf("Queue Full. Its overflow.\n\n\n");
+       return 1;}
+ printf("Enter data  ");
+ scanf("%d",&data);
+ if(f==-1&&r==-1)
+       f++;
+ r++;
+ q[r]=data;
+ printf("%d entered at position %d\n\n\n",data,r+1);
+ return 1;
+}
+int dequeue()                                   //               Case 2
+{
+ int i,temp;
+ if(f==-1&&r==-1){
+	printf("Queue Already empty.Its underflow.\n\n\n");
+	return 1;}
+
+ if(r==0)  {
+	 printf("Deleted %d\n\n\n",q[f]);
+	 r=-1;f=-1;
+	 return 1;}
+ printf("%d deleted.\n\n\n",q[f]);
+ for(i=0;i<=r;i++)
+      q[i]=q[i+1];
+ r--;
+ return 1;
+}
+int print()                                                  //Case 3
+{
+ if(f==-1&&r==-1){
+       printf("Queue is empty.\n\n\n");
+       return 1;}
+ for(i=f;i<=r;i++)
+       printf("%d <-- ",q[i]);
+ printf("\n\n\n");
+ return 1;
+}
+//////////////////////////////////////////////////////////////////////////////
+int deal_dynamic()
+{
+ int c;
+ while(1)
+ {
+   printf("\n\nEnter 0 for returning to previous menu\n\nWorking by ");
+   printf("allocating dynmic memory.\n1 Stack\n2 Queue\nEnter your choice  ");
+   scanf("%d",&c);
+   switch(c)
+   {
+    case 1:dynamic_stack_op();break;
+    case 2:dynamic_queue_op();break;
+    default:return 1;break;
+   }
+ }
+}
+int dynamic_stack_op()
+{
+ int c;
+ printf("\n\nYou choosed to work with Stack by allocating dynamic memory.\n");
+ while(1)
+ {
+  printf("You can perform following operations on a stack.-\n1 Push a node\n");
+  printf("2 Pop a node\n3 Print last entered node(peek)\n4 Display Stack\n");
+  printf("Enter your chioce  ");
+  scanf("%d",&c);
+  switch(c)
+  {
+   case 1:dypush();break;
+   case 2:dypop();break;
+   case 3:dypeek();break;
+   case 4:dydisplay();break;
+   default: return 1;break;
+  }
+ }
+}
+int dypush()
+{
+ stack *new;       int data;
+ printf("\nEnter data to be pushed  ");
+ scanf("%d",&data);
+ new=(stack*)malloc(sizeof(stack));
+ new->data=data;
+ new->link=top;
+ top=new;
+ printf("%d pushed in stack.\n\n\n",data);
+ return 1;
+}
+int dypop()
+{
+ stack *del;
+ if(top==NULL){
+	   printf("Stack already empty.\n\n\n");
+	   return 1;
+	      }
+ del=top;
+ top=top->link;
+ printf("%d poped out.\n\n\n",del->data);
+ free(del);
+ return 1;
+}
+int dypeek()
+{
+ if(top==NULL){
+	 printf("Stack Empty.\n\n\n");
+	 return 1;
+	      }
+ printf("%d is at the peek of stack.\n\n\n",top->data);
+ return 1;
+}
+int dydisplay()
+{
+ stack *print;
+ if(top==NULL){
+	      printf("Stack is Empty Nothing to display.\n\n\n");
+	      return 1;
+	      }
+ print=top;
+ while(print!=NULL)
+   {
+    printf("%d <---  ",print->data);
+    print=print->link;
+   }printf("\n\n\n"); return 1;
+}
+/////////////////////////////////////////////////////////////////////////////
+int dynamic_queue_op()
+{
+ int c;
+ printf("\n\nYou choosed to work with Queue by allocating dynamic memory\n");
+ while(1)
+ {
+  printf("Enter 0 to return to previous menu.\n1 Add an element\n2 Remove an element\n");
+  printf("3 Print front element of queue.\n4 Print Queue\nEnter your choice  ");
+  scanf("%d",&c);
+  switch(c)
+   {
+    case 1:nq();break;
+    case 2:dq();break;
+    case 3:frontq();break;
+    case 4:printq();printf("\n\n\n");break;
+    default:return 1;break;
+   }
+ }
+}
+int nq()
+{
+ Q *new;
+ int data;
+ printf("Enter data   ");
+ scanf("%d",&data);
+ new=malloc(sizeof(Q));
+ new->data=data;
+ new->link=NULL;
+ if(rear!=NULL)
+	rear->link=new;
+ rear=new;
+ printf("%d entered in Queue\n\n\n",rear->data);
+ if(front==NULL)
+		front=rear;
+ return 1;
+}
+int dq()
+{
+ Q *fre;
+ if(front==NULL) {
+	   printf("Queue already Empty.\n\n\n");
+	   return 1;
+		 }
+ fre=front;
+ front=front->link;
+ printf("%d removed from Queue according to FIFO principle.\n\n\n",fre->data);
+ free(fre);
+ if(front==NULL)
+       rear=front;
+ return 1;
+}
+int frontq()
+{
+ if(front==NULL){
+	    printf("Queue Empty.\n\n\n");
+	    return 1;
+		}
+ printf("%d is at the peek\n\n\n",front->data);
+ return 1;
+}
+int printq()
+{
+ Q *print;
+ if(front==NULL){
+	 printf("Queue empty, nothing to display.");
+	 return 1;}
+ print=front;
+ while(print!=NULL){
+		   printf("%d <-- ",print->data);
+		   print=print->link;
+		   }
+
+ return 1;
+}
+
+/////////////////////////////////////////////////////////////////////////////
+void main()
+{                    //Main()
+  int c;  stack *del;  Q *fre;
+  clrscr();
+  printf("\1  \2  \1  \2  \1  \2  \1  \2  \1  \2");
+  while(1)
+  { printf("\n\nMenu Driven\n1 Static Memory Allocation (Using Array)\n2 Dynamic Memory Allocation (Using Pointer\n");
+    printf("Enter your choice  ");
+    scanf("%d",&c);
+    switch(c)
+    {                                    //Menu
+     case 1:deal_static();break;         //Static
+     case 2:deal_dynamic();break;        //Dynamic
+     default:goto free_mem;exit(1);
+  } }
+  free_mem:
+	 { while(top!=NULL)
+	      {
+	       del=top;
+	       top=top->link;
+	       free(del);
+	       printf("Memory of a Stack Node Deallocated\n");
+	      }
+	   while(front!=NULL)
+	      {
+	       fre=front;
+	       front=front->link;
+	       free(fre);
+	       printf("Memory of a Queue Node Deallocated\n");
+	 }    }
+ getch();
+}

@@ -1,0 +1,43 @@
+#include<iostream.h>
+#include<conio.h>
+class Shape
+{
+ int s,S;
+ float r;
+ float A;
+ public:
+ void area(int a)
+ {
+   A=a*a;
+   cout<<"Area of circle "<<A;
+ }
+ void area(int a,int b)
+ {
+   A=a*b;
+   cout<<"Area of rectangle "<<A;
+ }
+ void area(float a)
+ {
+   A=3.14*a;
+   cout<<"Area of Square "<<A;
+ }
+ void cal()
+ {
+  cout<<"Claculate Area of Different Shapes-\n\n  ";
+      cout<<"Enter radius of cicle ";cin>>r;cout<<endl;
+      area(r);
+      cout<<"Enter length of rectangle  ";cin>>s;cout<<endl;
+      cout<<"Enter breath of rectangle  ";cin>>S;cout<<endl;
+      area(s,S);
+      cout<<"Enter side of square ";cin>>s;cout<<endl;
+      area(s);
+ }
+}
+
+void main()
+{
+clrscr();
+Shape obj;
+obj.cal();
+getch();
+}
